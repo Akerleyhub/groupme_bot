@@ -38,7 +38,11 @@ LOCATIONS = {
 }
 SHORT_LOCATIONS = ['ualbany','ualbs','corning preserve','helderberg hudson (slingerlands)','schuyler flatts','klam tavern','vischer ferry',
                    'leah bakery','rpi','alexander','cannon','lions park']
-SCHEDULE = [] #TODO
+SCHEDULE = [{'date':'03/14/2026','event':'❗Running of the Green @SchalmontHS aka-ROTG(REQUIRED)','distance':'5k'},{'date':'04/11/2026','event':'Helderberg to Hudson aka-H2H','distance':'13.1mi'},{'date':'05/02/2026','event':'Bacon Hill Bonanza','distance':'10k'},
+            {'date':'05/30/2026','event':'❗Delightful Run for Women(REQUIRED:if female)','distance':'5k'},{'date':'06/06/2026','event':'❗Kinderhook OK 5K(REQUIRED)','distance':'5k'},{'date':'06/06/2026','event':'USATF Masters 4 Miler','distance':'4mi'},
+            {'date':'07/04/2026','event':'Firecracker 4','distance':'4mi'},{'date':'07/04/2026','event':'Freedom Mile','distance':'1mi'},{'date':'07/12/2026','event':'Boilermaker','distance':'15k'},
+            {'date':'09/06/2026','event':'Run 4 the River','distance':'13.1mi'},{'date':'09/12/2026','event':'❗Malta 5k(REQUIRED)','distance':'5k'},
+            {'date':'10/03/2026','event':'Barn to Bridge','distance':'5k'},{'date':'10/11/2026','event':'Mohawk Hudson River','distance':'13.1mi'},{'date':'11/08/2026','event':'❗Stackadeathon(REQUIRED)','distance':'15k'},]
 
 class GroupMeMessage(BaseModel):
     """Pydantic model for incoming GroupMe webhook payload"""
@@ -145,7 +149,10 @@ async def handle_groupme_webhook(request: Request):
                 if location_json['id'] == location_id:
                     send_message(f"I found {location_json['name']}",location_json)
     elif text == "!schedule":
-        send_message(' | '.join(SHORT_LOCATIONS))
+        out = ''
+        for race in SCHEDULE:
+            out+= str(race).replace('{','').replace('}','') + '/n'
+        send_message(out)
     elif text == "!help":
         send_message(
             "Available commands:\n"
