@@ -131,7 +131,7 @@ async def handle_groupme_webhook(request: Request):
     if text == "!hello":
         send_message(f"Hello, {msg.name}! 👋")
     elif text == "!greet":
-        send_message("Hello, everyone 👋! I am a bot, dont call me an LLM😠. Here to help with finding running locations a little easier, show the race schedule, and possibly more to come!")
+        send_message("Hello, everyone 👋! I am a bot, dont call me an LLM😠. Here to help with finding running locations a little easier, show the race schedule, and possibly more to come! Like Devin I'm a little slow😣, so be patient if there's a delay in response(I'm on a free tier)")
     elif text == "!alllocations" or text == "!alllocation":
         output = ''
         for location in LOCATIONS:
@@ -149,9 +149,9 @@ async def handle_groupme_webhook(request: Request):
                 if location_json['id'] == location_id:
                     send_message(f"I found {location_json['name']}",attachments=[location_json])
     elif text == "!schedule":
-        out = ''
+        out = 'Date       Event     Distance \n'
         for race in SCHEDULE:
-            out+= str(race).replace('{','').replace('}','') + '\n'
+            out+='       '.join(race.values()) + '\n'
         send_message(out)
     elif text == "!help":
         send_message(
