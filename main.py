@@ -36,7 +36,7 @@ LOCATIONS = {
         {'id':'11','type':'location','name':"Lions Park",'lat': '42.777019','lng': '-73.824418','runtype':'bikepath',"address":"3439 Rosendale Rd, Niskayuna, NY 12309"}
     ]
 }
-SHORT_LOCATIONS = ['ualbany','ualbs','corning preserve','helderberg hudson (slingerlands)','schuyler flatts','klam tavern','vischer ferry',
+SHORT_LOCATIONS = ['ualbany','ualbs','corning','delmar bikepath','schuyler flatts','klam','vischer',
                    'leah bakery','rpi','alexander','cannon','lions park']
 SCHEDULE = [{'date':'03/14/2026','event':'❗Running of the Green @SchalmontHS aka-ROTG(REQUIRED)','distance':'5k'},{'date':'04/11/2026','event':'Helderberg to Hudson aka-H2H','distance':'13.1mi'},{'date':'05/02/2026','event':'Bacon Hill Bonanza','distance':'10k'},
             {'date':'05/30/2026','event':'❗Delightful Run for Women(REQUIRED:if female)','distance':'5k'},{'date':'06/06/2026','event':'❗Kinderhook OK 5K(REQUIRED)','distance':'5k'},{'date':'06/06/2026','event':'USATF Masters 4 Miler','distance':'4mi'},
@@ -79,18 +79,18 @@ def handle_word_match(user_input: str)-> str:
         scorer=fuzz.token_sort_ratio   # or fuzz.ratio, fuzz.partial_ratio, etc.
     )
 
-    if score >= 70:  # adjustable threshold (70-85 is common)
+    if score >= 60:  # adjustable threshold (70-85 is common)
         if best_match == 'ualbany' or best_match == 'ualbs':
             return '1'
-        elif best_match == 'corning preserve':
+        elif best_match == 'corning':
             return '2'
-        elif best_match == 'helderberg hudson (slingerlands)':
+        elif best_match == 'delmar bikepath':
             return '3'
         elif best_match == 'schuyler flatts':
             return '4'
-        elif best_match == 'klam tavern':
+        elif best_match == 'klam':
             return '5'
-        elif best_match == 'vischer ferry':
+        elif best_match == 'vischer':
             return '6'
         elif best_match == 'leah bakery':
             return '7'
@@ -130,8 +130,8 @@ async def handle_groupme_webhook(request: Request):
     # -----------------------
     if text == "!hello":
         send_message(f"Hello, {msg.name}! 👋")
-    elif text == "!health":
-        send_message(f"I'm alive dw👋")
+    elif text == "!greet":
+        send_message("Hello, everyone 👋! I am a bot, dont call me an LLM😠. Here to help with finding running locations a little easier, show the race schedule, and possibly more to come!")
     elif text == "!alllocations" or text == "!alllocation":
         output = ''
         for location in LOCATIONS:
@@ -147,11 +147,11 @@ async def handle_groupme_webhook(request: Request):
         for location in LOCATIONS:
             for location_json in LOCATIONS[location]:
                 if location_json['id'] == location_id:
-                    send_message(f"I found {location_json['name']}",location_json)
+                    send_message(f"I found {location_json['name']}",attachments=[location_json])
     elif text == "!schedule":
         out = ''
         for race in SCHEDULE:
-            out+= str(race).replace('{','').replace('}','') + '/n'
+            out+= str(race).replace('{','').replace('}','') + '\n'
         send_message(out)
     elif text == "!help":
         send_message(
