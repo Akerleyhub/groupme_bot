@@ -8,7 +8,7 @@ from rapidfuzz import process, fuzz
 load_dotenv()
 
 app = FastAPI(title="GroupMe Bot")
-
+PORT = os.getenv("PORT") or 8000 
 BOT_ID = os.getenv("GROUPME_BOT_ID")
 GROUPME_ACCESS_TOKEN = os.getenv("GROUPME_ACCESS_TOKEN")
 
@@ -171,4 +171,4 @@ async def handle_groupme_webhook(request: Request):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=PORT)
